@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фитнес-клуб «Царицыно Спорт»</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #111;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                        url('fitness-bg.png') center/cover no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            color: #ff4500;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            color: #ccc;
+            max-width: 600px;
+        }
+
+        nav {
+            background: #1a1a1a;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(255,69,0,0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: #ff4500; }
+
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 2.2rem;
+            color: #ff4500;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid #333;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff4500;
+        }
+
+        .service-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: #ff4500;
+            margin-bottom: 0.5rem;
+        }
+
+        #model-section {
+            background: #0d0d0d;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #ff4500;
+            position: relative;
+        }
+
+        #canvas-container canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .model-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: #ff4500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        th {
+            background: #ff4500;
+            color: #fff;
+        }
+
+        tr:nth-child(even) { background: #1a1a1a; }
+
+        form {
+            max-width: 500px;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input, textarea {
+            padding: 0.8rem;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #1e1e1e;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff4500;
+        }
+
+        button[type="submit"] {
+            padding: 1rem;
+            background: #ff4500;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button[type="submit"]:hover { background: #e03e00; }
+
+        footer {
+            background: #0a0a0a;
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#model">3D-модель</a></li>
+            <li><a href="#pricing">Абонементы</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+    </nav>
+
+    <header id="home">
+        <h1>Царицыно Спорт</h1>
+        <p>Современный фитнес-клуб с профессиональным оборудованием, опытными тренерами и индивидуальным подходом к каждому клиенту.</p>
+    </header>
+
+    <section id="services">
+        <h2>Наши услуги</h2>
+        <div class="services">
+            <div class="service-card">
+                <div class="icon"></div>
+                <h3>Тренажёрный зал</h3>
+                <p>Более 50 тренажёров от ведущих мировых производителей. Свободные веса, кардиозона, функциональная зона.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon"></div>
+                <h3>Групповые занятия</h3>
+                <p>Йога, пилатес, кроссфит, зумба, стретчинг — более 30 направлений для любого уровня подготовки.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon"></div>
+                <h3>Единоборства</h3>
+                <p>Бокс, кикбоксинг, MMA. Тренировки с персональным тренером и в группах.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon"></div>
+                <h3>Бассейн</h3>
+                <p>25-метровый бассейн с подогревом. Аквааэробика, плавание для детей и взрослых.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon"></div>
+                <h3>Персональный тренинг</h3>
+                <p>Индивидуальные программы тренировок и питания от сертифицированных специалистов.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon"></div>
+                <h3>СПА и сауна</h3>
+                <p>Финская сауна, хаммам, массажный кабинет — идеальное завершение тренировки.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="model">
+        <h2>3D-модель: Гантель</h2>
+        <div id="canvas-container">
+            <div class="loading">Загрузка 3D-модели...</div>
+        </div>
+        <p class="model-info"> Вращайте модель мышью · Колёсико — масштаб · ПКМ — перемещение</p>
+    </section>
+
+    <section id="pricing">
+        <h2>Абонементы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Тип абонемента</th>
+                    <th>Срок</th>
+                    <th>Цена</th>
+                    <th>Включено</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Разовое посещение</td>
+                    <td>1 день</td>
+                    <td>500 ₽</td>
+                    <td>Тренажёрный зал</td>
+                </tr>
+                <tr>
+                    <td>Стандарт</td>
+                    <td>1 месяц</td>
+                    <td>3 500 ₽</td>
+                    <td>Зал + групповые</td>
+                </tr>
+                <tr>
+                    <td>Премиум</td>
+                    <td>3 месяца</td>
+                    <td>9 000 ₽</td>
+                    <td>Всё включено + СПА</td>
+                </tr>
+                <tr>
+                    <td>Годовой</td>
+                    <td>12 месяцев</td>
+                    <td>25 000 ₽</td>
+                    <td>Всё включено + персональный тренер</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="contact">
+        <h2>Свяжитесь с нами</h2>
+        <form onsubmit="event.preventDefault(); alert('Заявка отправлена!');">
+            <input type="text" placeholder="Ваше имя" required>
+            <input type="tel" placeholder="Телефон" required>
+            <input type="email" placeholder="E-mail" required>
+            <textarea rows="4" placeholder="Сообщение"></textarea>
+            <button type="submit">Отправить заявку</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2026 Фитнес-клуб «Царицыно Спорт». Все права защищены.</p>
+        <p>г. Москва, ул. Луганская, д. 4, корп. 1 | +7 (495) 123-45-67</p>
+    </footer>
+
+    <!-- ===== THREE.JS И ЗАГРУЗЧИКИ 3D-МОДЕЛЕЙ ===== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Загрузчик GLTF/GLB (рекомендуемый формат) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Загрузчик OBJ (альтернативный формат) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <!-- Загрузчик FBX (альтернативный формат) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FBXLoader.js"></script>
+
+    <script>
+        // ========== НАСТРОЙКА СЦЕНЫ ==========
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x111111);
+
+        const camera = new THREE.PerspectiveCamera(
+            45,
+            container.clientWidth / container.clientHeight,
+            0.1,
+            1000
+        );
+        camera.position.set(0, 2, 6);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // Управление камерой
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Освещение
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(5, 10, 5);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        const pointLight = new THREE.PointLight(0xff4500, 1, 20);
+        pointLight.position.set(-3, 3, 3);
+        scene.add(pointLight);
+
+        // Пол
+        const floorGeometry = new THREE.PlaneGeometry(20, 20);
+        const floorMaterial = new THREE.MeshStandardMaterial({
+            color: 0x1a1a1a,
+            roughness: 0.8
+        });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -0.7;
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        // ========== ЗАГРУЗКА 3D-МОДЕЛИ ==========
+        
+        //  ВАЖНО: Укажите путь к вашей 3D-модели здесь
+        // Поддерживаемые форматы: .glb, .gltf, .obj, .fbx
+        const modelPath = 'C:\Users\Student\Desktop\сайт\model';  // ← ИЗМЕНИТЕ НА ПУТЬ К ВАШЕЙ МОДЕЛИ
+        
+        // Переменная для хранения загруженной модели
+        let loadedModel = null;
+
+        // Функция загрузки GLTF/GLB модели (рекомендуется)
+        function loadGLTFModel(path) {
+            const loader = new THREE.GLTFLoader();
+            
+            loader.load(
+                path,
+                function (gltf) {
+                    loadedModel = gltf.scene;
+                    
+                    // Настройка модели
+                    loadedModel.traverse((child) => {
+                        if (child.isMesh) {
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                            
+                            // Если материалы не заданы, создаём стандартные
+                            if (!child.material) {
+                                child.material = new THREE.MeshStandardMaterial({
+                                    color: 0x888888,
+                                    metalness: 0.7,
+                                    roughness: 0.3
+                                });
+                            }
+                        }
+                    });
+
+                    // Масштабирование и позиционирование модели
+                    const box = new THREE.Box3().setFromObject(loadedModel);
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 2 / maxDim; // Нормализуем размер
+                    loadedModel.scale.setScalar(scale);
+
+                    // Центрирование модели
+                    const center = box.getCenter(new THREE.Vector3());
+                    loadedModel.position.sub(center.multiplyScalar(scale));
+                    loadedModel.position.y = 0; // На уровне пола
+
+                    scene.add(loadedModel);
+                    
+                    // Удаляем текст загрузки
+                    const loadingEl = document.querySelector('.loading');
+                    if (loadingEl) loadingEl.remove();
+                    
+                    console.log('Модель успешно загружена:', gltf);
+                },
+                function (xhr) {
+                    // Прогресс загрузки
+                    const percent = (xhr.loaded / xhr.total * 100).toFixed(0);
+                    console.log(`Загрузка: ${percent}%`);
+                },
+                function (error) {
+                    console.error('Ошибка загрузки модели:', error);
+                    const loadingEl = document.querySelector('.loading');
+                    if (loadingEl) {
+                        loadingEl.textContent = 'Ошибка загрузки модели. Проверьте путь к файлу.';
+                        loadingEl.style.color = '#ff0000';
+                    }
+                }
+            );
+        }
+
+        // Функция загрузки OBJ модели (альтернатива)
+        function loadOBJModel(path) {
+            const loader = new THREE.OBJLoader();
+            
+            loader.load(
+                path,
+                function (object) {
+                    loadedModel = object;
+                    
+                    object.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                color: 0x888888,
+                                metalness: 0.7,
+                                roughness: 0.3
+                            });
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                        }
+                    });
+
+                    // Масштабирование и центрирование
+                    const box = new THREE.Box3().setFromObject(object);
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 2 / maxDim;
+                    object.scale.setScalar(scale);
+
+                    const center = box.getCenter(new THREE.Vector3());
+                    object.position.sub(center.multiplyScalar(scale));
+                    object.position.y = 0;
+
+                    scene.add(object);
+                    
+                    const loadingEl = document.querySelector('.loading');
+                    if (loadingEl) loadingEl.remove();
+                },
+                function (xhr) {
+                    const percent = (xhr.loaded / xhr.total * 100).toFixed(0);
+                    console.log(`Загрузка: ${percent}%`);
+                },
+                function (error) {
+                    console.error('Ошибка загрузки OBJ:', error);
+                }
+            );
+        }
+
+        // Функция загрузки FBX модели (альтернатива)
+        function loadFBXModel(path) {
+            const loader = new THREE.FBXLoader();
+            
+            loader.load(
+                path,
+                function (object) {
+                    loadedModel = object;
+                    
+                    object.traverse((child) => {
+                        if (child.isMesh) {
+                            if (!child.material) {
+                                child.material = new THREE.MeshStandardMaterial({
+                                    color: 0x888888,
+                                    metalness: 0.7,
+                                    roughness: 0.3
+                                });
+                            }
+                            child.castShadow = true;
+                            child.receiveShadow = true;
+                        }
+                    });
+
+                    const box = new THREE.Box3().setFromObject(object);
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 2 / maxDim;
+                    object.scale.setScalar(scale);
+
+                    const center = box.getCenter(new THREE.Vector3());
+                    object.position.sub(center.multiplyScalar(scale));
+                    object.position.y = 0;
+
+                    scene.add(object);
+                    
+                    const loadingEl = document.querySelector('.loading');
+                    if (loadingEl) loadingEl.remove();
+                },
+                function (xhr) {
+                    const percent = (xhr.loaded / xhr.total * 100).toFixed(0);
+                    console.log(`Загрузка: ${percent}%`);
+                },
+                function (error) {
+                    console.error('Ошибка загрузки FBX:', error);
+                }
+            );
+        }
+
+        // ========== ВЫБОР ФОРМАТА МОДЕЛИ ==========
+        // Раскомментируйте нужную функцию загрузки:
+        
+        // Для GLB/GLTF (рекомендуется):
+        loadGLTFModel(modelPath);
+        
+        // Для OBJ:
+        // loadOBJModel('models/dumbbell.obj');
+        
+        // Для FBX:
+        // loadFBXModel('models/dumbbell.fbx');
+
+        // ========== АНИМАЦИЯ ==========
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Анимация модели (если загружена)
+            if (loadedModel) {
+                loadedModel.rotation.y += 0.005;
+                loadedModel.rotation.x = Math.sin(Date.now() * 0.001) * 0.05;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Адаптивность
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+
+</body>
+</html>
